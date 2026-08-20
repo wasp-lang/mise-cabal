@@ -17,6 +17,23 @@ PLUGIN = { -- luacheck: ignore
 
     depends = { "ghc", "mise-ghcup:ghc", "cabal", "aqua:cabal", "mise-ghcup:cabal" },
 
+    systemDependencies = {
+        {
+            bin = "ghc",
+            packages = { brew = "ghc", apt = "ghc", dnf = "ghc", pacman = "ghc", apk = "ghc" },
+        },
+        {
+            bin = "cabal",
+            packages = {
+                brew = "cabal-install",
+                apt = "cabal-install",
+                dnf = "cabal-install",
+                pacman = "cabal-install",
+                apk = "cabal",
+            },
+        },
+    },
+
     notes = {
         "Installs executable packages from Hackage, e.g. `mise use mise-cabal:pandoc-cli@latest`.",
         "Tools are compiled from source: installs can be slow and need a Haskell toolchain.",

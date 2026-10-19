@@ -107,8 +107,14 @@ ARCH_TYPE = ""
 ---@field tool string Tool name
 ---@field options BackendOptions Tool options from mise.toml
 
+--- A version with its release date. `created_at` is an RFC 3339 timestamp that
+--- mise uses for `minimum_release_age` and `--before`.
+---@class BackendVersion
+---@field version string Version string
+---@field created_at? string Release date, e.g. "2026-01-31T12:00:00Z"
+
 ---@class BackendListVersionsResult
----@field versions string[] List of available versions, ascending (mise does not re-sort)
+---@field versions (string|BackendVersion)[] List of available versions, ascending (mise does not re-sort)
 
 ---@class BackendInstallCtx
 ---@field tool string Tool name
@@ -119,6 +125,13 @@ ARCH_TYPE = ""
 
 ---@class BackendInstallResult
 
+---@class BackendUninstallCtx
+---@field tool string Tool name
+---@field version string Installed version
+---@field install_path string Install directory, which still exists
+---@field download_path string Download directory
+---@field options BackendOptions Tool options from the current config
+
 ---@class BackendExecEnvCtx
 ---@field tool string Tool name
 ---@field version string Installed version
@@ -127,6 +140,18 @@ ARCH_TYPE = ""
 
 ---@class BackendExecEnvResult
 ---@field env_vars EnvKey[] Environment variables to set
+
+---@class BackendListToolsCtx
+
+---@class BackendSearchToolsCtx
+---@field query string Text to search for, after any prefix
+
+---@class BackendTool
+---@field name string Tool name, without the plugin prefix
+---@field description? string Short description
+
+---@class BackendToolsResult
+---@field tools BackendTool[] Tools to show in `mise search` and completion
 
 --- A single `PLUGIN.systemDependencies` entry: a system prerequisite mise checks
 --- before installing. Exactly one of bin/pkgconfig/sharedlib/command must be set.
@@ -160,7 +185,10 @@ ARCH_TYPE = ""
 ---@field MisePath? fun(self: Plugin, ctx: MisePathCtx): string[]
 ---@field BackendListVersions? fun(self: Plugin, ctx: BackendListVersionsCtx): BackendListVersionsResult
 ---@field BackendInstall? fun(self: Plugin, ctx: BackendInstallCtx): BackendInstallResult
+---@field BackendUninstall? fun(self: Plugin, ctx: BackendUninstallCtx)
 ---@field BackendExecEnv? fun(self: Plugin, ctx: BackendExecEnvCtx): BackendExecEnvResult
+---@field BackendListTools? fun(self: Plugin, ctx: BackendListToolsCtx): BackendToolsResult
+---@field BackendSearchTools? fun(self: Plugin, ctx: BackendSearchToolsCtx): BackendToolsResult
 PLUGIN = {}
 
 ------------------------------------------------------------------------
@@ -225,10 +253,14 @@ local file = {}
 ---@class CmdExecOpts
 ---@field cwd? string Working directory
 ---@field env? table<string, string> Environment variables
----@field timeout? integer Timeout in milliseconds
+---@field timeout? number Seconds the command may run (fractions allowed); then it is killed and the call raises
 
+--- `exec` captures output and raises with stderr on a non-zero exit. `stream`
+--- connects the terminal (stdin included) and holds it exclusively, so use it
+--- only for hooks that must prompt; report progress with `log.info` instead.
 ---@class cmd
----@field exec fun(command: string, opts?: CmdExecOpts): string Execute a shell command
+---@field exec fun(command: string, opts?: CmdExecOpts): string Execute a shell command, returning its stdout
+---@field stream fun(command: string, opts?: CmdExecOpts): integer Execute a shell command attached to the terminal, returning its exit code
 local cmd = {}
 
 -- env module ---------------------------------------------------------

@@ -1,0 +1,5 @@
+paths:
+  .github/workflows/cd.yaml:
+    ignore:
+      # actionlint does not yet understand the `$/` same-repo reusable workflow syntax.
+      - 'reusable workflow call "\$/.+" at "uses" is not following the format'

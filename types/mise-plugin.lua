@@ -128,6 +128,18 @@ ARCH_TYPE = ""
 ---@class BackendExecEnvResult
 ---@field env_vars EnvKey[] Environment variables to set
 
+---@class BackendListToolsCtx
+
+---@class BackendSearchToolsCtx
+---@field query string Text to search for, after any prefix
+
+---@class BackendTool
+---@field name string Tool name, without the plugin prefix
+---@field description? string Short description
+
+---@class BackendToolsResult
+---@field tools BackendTool[] Tools to show in `mise search` and completion
+
 --- A single `PLUGIN.systemDependencies` entry: a system prerequisite mise checks
 --- before installing. Exactly one of bin/pkgconfig/sharedlib/command must be set.
 --- Note there is no per-OS filter: only `sharedlib` is Linux-only (auto-satisfied
@@ -161,6 +173,8 @@ ARCH_TYPE = ""
 ---@field BackendListVersions? fun(self: Plugin, ctx: BackendListVersionsCtx): BackendListVersionsResult
 ---@field BackendInstall? fun(self: Plugin, ctx: BackendInstallCtx): BackendInstallResult
 ---@field BackendExecEnv? fun(self: Plugin, ctx: BackendExecEnvCtx): BackendExecEnvResult
+---@field BackendListTools? fun(self: Plugin, ctx: BackendListToolsCtx): BackendToolsResult
+---@field BackendSearchTools? fun(self: Plugin, ctx: BackendSearchToolsCtx): BackendToolsResult
 PLUGIN = {}
 
 ------------------------------------------------------------------------

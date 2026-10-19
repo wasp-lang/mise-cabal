@@ -58,16 +58,20 @@ end
 --- `env` option, which scopes it to this subprocess and leaves the rest of the
 --- environment (PATH, HOME, ...) intact.
 --- @param dir string
---- @param args string
+--- @param args string Arguments, which can reference `env` entries through `shell.var`
+--- @param env? table<string, string> Extra environment variables for the command
 --- @return string
-function M.call(dir, args)
+function M.call(dir, args, env)
     local cmd = require("cmd")
 
-    return cmd.exec("cabal " .. args, {
-        env = {
-            CABAL_DIR = dir,
-        },
-    })
+    local cmd_env = {
+        CABAL_DIR = dir,
+    }
+    for key, value in pairs(env or {}) do
+        cmd_env[key] = value
+    end
+
+    return cmd.exec("cabal " .. args, { env = cmd_env })
 end
 
 return M

@@ -57,6 +57,13 @@ jobs:
       - if: matrix.env.install-step
         run: ${{ matrix.env.install-step }}
 
+      # The macos-26-arm64 image ships the Command Line Tools 27 SDK but defaults
+      # to Xcode 26.6, whose ld cannot read that SDK's .tbd stubs, so GHC fails
+      # to link. Use the Command Line Tools for both ld and the SDK.
+      # https://github.com/actions/runner-images/issues/14940
+      - if: runner.os == 'macOS' && runner.arch == 'ARM64'
+        run: sudo xcode-select --switch /Library/Developer/CommandLineTools
+
       - uses: actions/checkout@v7
         with:
           path: ./plugin

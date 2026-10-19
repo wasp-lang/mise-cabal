@@ -52,6 +52,49 @@ function M.sort_versions(versions)
     return sorted
 end
 
+--- Whether `name` is a valid Hackage package name: one or more alphanumeric
+--- components joined by single hyphens, each containing at least one letter,
+--- e.g. "hlint", "pandoc-cli", "base64". The name ends up in a shell command, so
+--- this also guarantees it holds no shell metacharacters.
+--- @param name string
+--- @return boolean
+function M.is_package_name(name)
+    if type(name) ~= "string" or name == "" then
+        return false
+    end
+    for component in (name .. "-"):gmatch("(.-)%-") do
+        if not component:match("^%w+$") or not component:match("%a") then
+            return false
+        end
+    end
+    return true
+end
+
+--- Whether `version` is a valid Cabal version: dot-separated non-negative
+--- integers, e.g. "1", "3.8", "1.2.3.4". Like the package name, it ends up in a
+--- shell command, so this also guarantees it holds no shell metacharacters.
+--- @param version string
+--- @return boolean
+function M.is_version(version)
+    if type(version) ~= "string" or version == "" then
+        return false
+    end
+    for component in (version .. "."):gmatch("(.-)%.") do
+        if not component:match("^%d+$") then
+            return false
+        end
+    end
+    return true
+end
+
+--- Raise a mise-cabal error unless `name` is a valid Hackage package name.
+--- @param name string
+function M.check_package_name(name)
+    if not M.is_package_name(name) then
+        error("mise-cabal: '" .. tostring(name) .. "' is not a valid Hackage package name")
+    end
+end
+
 --- Run `cabal <args>` with the tool's own CABAL_DIR so cabal treats `dir` as its
 --- entire home: store, package index, config, and bins all live there, keeping
 --- each tool's install self-contained. CABAL_DIR is passed through cmd.exec's

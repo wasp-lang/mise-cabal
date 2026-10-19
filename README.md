@@ -14,7 +14,7 @@ Each tool is referenced as `mise-cabal:<hackage-package>@<version>`.
 
 ## Requirements
 
-- mise `2026.7.3` or newer
+- mise `2026.8.8` or newer
 
 We compile tools from source, so a working Haskell toolchain is needed:
 
@@ -24,7 +24,7 @@ We compile tools from source, so a working Haskell toolchain is needed:
 The easiest way is to let mise manage everything, in conjunction with the `mise-ghcup` plugin. Add to your `mise.toml`:
 
 ```toml
-min_version = "2026.7.3"
+min_version = "2026.8.8"
 
 [tools]
 "cabal" = "latest"
@@ -32,29 +32,27 @@ min_version = "2026.7.3"
 "mise-ghcup:ghc" = "latest"
 
 [plugins]
-"vfox-backend:mise-ghcup" = "https://github.com/wasp-lang/mise-ghcup.git"
+"vfox-backend:mise-ghcup" = "https://github.com/wasp-lang/mise-ghcup.git#v1.0.0"
 
 [settings]
 experimental = true # Needed for using backend plugins like mise-ghcup and mise-cabal
 ```
 
-## Install the plugin
-
-```bash
-mise plugin install https://github.com/wasp-lang/mise-cabal
-```
-
 ## Usage
 
-In your `mise.toml` file:
+Add the plugin to your `mise.toml`, pinned to a [release tag](https://github.com/wasp-lang/mise-cabal/releases):
+
+<!-- x-release-please-start-version -->
 
 ```toml
 [plugins]
-"vfox-backend:mise-cabal" = "https://github.com/wasp-lang/mise-cabal.git"
+"vfox-backend:mise-cabal" = "https://github.com/wasp-lang/mise-cabal.git#v1.0.0"
 
 [settings]
 experimental = true # Needed for using backend plugins like mise-cabal
 ```
+
+<!-- x-release-please-end -->
 
 Then you can use it freely:
 

@@ -80,8 +80,8 @@ jobs:
 
             [plugins]
             "vfox-backend:mise-ghcup" = "https://github.com/wasp-lang/mise-ghcup.git"
+            "vfox-backend:mise-cabal" = "./plugin"
 
-      - run: mise plugin link --force mise-cabal ./plugin
       - run: mise install
 
       - run: >

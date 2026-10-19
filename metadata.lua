@@ -5,7 +5,7 @@
 PLUGIN = { -- luacheck: ignore
     name = "mise-cabal",
 
-    version = "1.0.0",
+    version = "0.1.0", -- x-release-please-version
 
     description = "A mise backend plugin to install Haskell command-line tools from Hackage with cabal-install.",
 

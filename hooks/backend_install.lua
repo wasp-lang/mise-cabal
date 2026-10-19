@@ -12,8 +12,8 @@ function PLUGIN:BackendInstall(ctx)
     -- so a failed build shows the compiler errors instead of "see the build log".
     cabal.call(
         ctx.install_path,
-        "install " .. shell.var("MISE_CABAL_PACKAGE"),
-        { MISE_CABAL_PACKAGE = ctx.tool .. "-" .. ctx.version .. " 1>&2" }
+        "install " .. shell.var("MISE_CABAL_PACKAGE") .. " 1>&2",
+        { MISE_CABAL_PACKAGE = ctx.tool .. "-" .. ctx.version }
     )
 
     return {}

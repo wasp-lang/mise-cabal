@@ -46,7 +46,7 @@ Add the plugin to your `mise.toml`, pinned to a [release tag](https://github.com
 
 ```toml
 [plugins]
-"vfox-backend:mise-cabal" = "https://github.com/wasp-lang/mise-cabal.git#v1.0.0"
+"vfox-backend:mise-cabal" = "https://github.com/wasp-lang/mise-cabal.git#v1.1.0"
 
 [settings]
 experimental = true # Needed for using backend plugins like mise-cabal

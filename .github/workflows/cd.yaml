@@ -11,6 +11,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  ci:
+    uses: $/.github/workflows/ci.yaml
+    secrets: inherit
+
   release-please:
     runs-on: ubuntu-latest
 

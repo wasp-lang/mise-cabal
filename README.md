@@ -59,6 +59,9 @@ experimental = true # Needed for using backend plugins like mise-cabal
 Then you can use it freely:
 
 ```bash
+# Search Hackage for a package
+mise search mise-cabal:lint
+
 # List the versions available on Hackage
 mise ls-remote mise-cabal:hlint
 
@@ -82,6 +85,7 @@ You can also add tools directly to a `mise.toml`:
 
 ## How it works
 
+- **Searching** (`mise search`, shell completion) queries the Hackage search API, which matches package names and synopses.
 - **Listing** (`ls-remote`) queries the Hackage JSON API and returns the published versions of the package.
 - **Installing** sets `CABAL_DIR` to the tool version's own mise install directory and runs `cabal install <package>-<version>`. Because `CABAL_DIR` relocates cabal's whole home, the build store, package index, and binaries all live inside that directory.
 - **Data files** (used by tools like `pandoc` and `hlint`) live in the store right next to the binary, so they resolve automatically. There is no copying out of the store and no need for `embed_data_files`.
@@ -121,9 +125,10 @@ mise --debug install mise-cabal:hello@latest
 
 - `metadata.lua` - plugin metadata (`name`, `depends`, notes)
 - `hooks/backend_list_versions.lua` - lists Hackage versions
+- `hooks/backend_search_tools.lua` - searches Hackage packages for `mise search`
 - `hooks/backend_install.lua` - builds and installs a package
 - `hooks/backend_exec_env.lua` - puts the tool's bin dir on `PATH`
-- `lib/cabal.lua` - runs a command with the tool's isolated `CABAL_DIR`
+- `lib/cabal.lua` - Cabal version sorting, name/version validation, and running a command with the tool's isolated `CABAL_DIR`
 - `mise.toml` - dev tooling, Haskell toolchain, and tasks
 - `mise-tasks/test` - end-to-end test task
 - `.github/workflows/ci.yml` - CI on Linux, macOS, and Windows

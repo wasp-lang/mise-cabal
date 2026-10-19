@@ -8,9 +8,7 @@ function PLUGIN:BackendListVersions(ctx)
     local cabal = require("cabal")
 
     local tool = ctx.tool
-    if not tool or tool == "" then
-        error("mise-cabal: package name cannot be empty")
-    end
+    cabal.check_package_name(tool)
 
     -- The Hackage "preferred" endpoint returns JSON with two arrays:
     --   "normal-version"     : usable versions

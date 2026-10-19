@@ -82,6 +82,11 @@ jobs:
       - run: >
           mise ls-remote mise-cabal:${{ matrix.tool.name }}
 
+      - shell: bash
+        run: >
+          mise search --no-header --match-type equal mise-cabal:${{ matrix.tool.name }}
+          | grep -E '^mise-cabal:${{ matrix.tool.name }}( |$)'
+
       - run: >
           mise exec mise-cabal:${{ matrix.tool.name }}@latest
           --

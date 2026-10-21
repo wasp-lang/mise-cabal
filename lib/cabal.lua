@@ -37,17 +37,23 @@ function M.compare_versions(a, b)
     return 0
 end
 
---- Sort Cabal version strings ascending (oldest -> newest), as mise expects.
---- Returns a new sorted list and leaves the input untouched.
---- @param versions string[]
---- @return string[]
+--- Sort Cabal versions ascending (oldest -> newest), as mise expects. Entries
+--- can be version strings or `BackendVersion` tables. Returns a new sorted list
+--- and leaves the input untouched.
+--- @generic T: string|BackendVersion
+--- @param versions T[]
+--- @return T[]
 function M.sort_versions(versions)
+    local function version(v)
+        return type(v) == "table" and v.version or v
+    end
+
     local sorted = {}
     for i, v in ipairs(versions) do
         sorted[i] = v
     end
     table.sort(sorted, function(a, b)
-        return M.compare_versions(a, b) < 0
+        return M.compare_versions(version(a), version(b)) < 0
     end)
     return sorted
 end

@@ -32,7 +32,7 @@ min_version = "2026.10.17"
 "mise-ghcup:ghc" = "latest"
 
 [plugins]
-"vfox-backend:mise-ghcup" = "https://github.com/wasp-lang/mise-ghcup.git#v1.0.0"
+"vfox-backend:mise-ghcup" = "packslip:wasp-lang/mise-ghcup#3.0.0"
 
 [settings]
 experimental = true # Needed for using backend plugins like mise-ghcup and mise-cabal

@@ -1,10 +1,12 @@
 --- A Hackage package index shared by all tools. It lives in the plugin's cache
 --- directory, is refreshed with `cabal update`, and answers searches and version
 --- listings locally, including each version's upload date.
+--- Installs download their sources through it too.
 local M = {}
 
 ---@class Index
 ---@field dir string CABAL_DIR that owns the index
+---@field repo_cache string Where cabal keeps the index and source tarballs, for `--remote-repo-cache`
 ---@field tar string The index tarball
 
 --- Strip surrounding whitespace, including the CRLF that Windows output ends with.
@@ -16,7 +18,7 @@ end
 
 --- Bring the shared index up to date. Returns nil when there is no usable index
 --- (mise has no cache directory for us, or cabal is not installed yet), so the
---- caller can fall back to the Hackage API.
+--- caller can fall back to the Hackage API or a per-tool index.
 --- @return Index?
 function M.update()
     local cabal = require("cabal")
@@ -50,7 +52,7 @@ function M.update()
         log.warn("mise-cabal: could not update the Hackage package index, using the existing one: " .. tostring(err))
     end
 
-    return { dir = dir, tar = tar }
+    return { dir = dir, repo_cache = repo_cache, tar = tar }
 end
 
 --- A NUL-terminated string field of a tar header.

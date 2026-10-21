@@ -86,14 +86,14 @@ You can also add tools directly to a `mise.toml`:
 - **Searching** (`mise search`, shell completion) runs `cabal list` against a Hackage package index shared by all tools, kept in mise's cache directory and refreshed with `cabal update`. It matches package names and shows each package's synopsis.
 - **Listing** (`ls-remote`) reads the published versions from the same index, along with each version's upload date, so [`minimum_release_age`](https://mise.jdx.dev/configuration/settings.html#minimum_release_age) and `--before` can filter them.
 - If the shared index is unavailable (for example, cabal is not installed yet), searching and listing fall back to the Hackage API, whose versions are undated.
-- **Installing** sets `CABAL_DIR` to the tool version's own mise install directory and runs `cabal install <package>-<version>`. Because `CABAL_DIR` relocates cabal's whole home, the build store, package index, and binaries all live inside that directory.
+- **Installing** sets `CABAL_DIR` to the tool version's own mise install directory and runs `cabal install <package>-<version>`. Because `CABAL_DIR` relocates cabal's whole home, the build store and binaries live inside that directory. The package index and source tarballs come from the shared cache (`--remote-repo-cache`), which the installed tool does not need afterwards. Without the shared cache, each install downloads its own index.
 - **Data files** (used by tools like `pandoc` and `hlint`) live in the store right next to the binary, so they resolve automatically. There is no copying out of the store and no need for `embed_data_files`.
 - **Running** simply puts the tool's `bin` directory on `PATH`.
 
 ## Limitations
 
-- **Compiles from source.** First installs can be slow and require the Haskell toolchain. Each tool keeps its own `CABAL_DIR`, so the package index and build store are not shared across tools (more time and disk than a shared store, in exchange for fully self-contained, relocation-safe installs).
-- **Large package index.** The first search or listing downloads the Hackage package index (about 140 MB, 1.2 GB on disk) into mise's cache directory, which takes about a minute. Later runs only fetch new uploads. `mise cache clear` deletes it.
+- **Compiles from source.** First installs can be slow and require the Haskell toolchain. Each tool keeps its own `CABAL_DIR`, so the build store is not shared across tools (more time and disk than a shared store, in exchange for fully self-contained, relocation-safe installs).
+- **Large package index.** The first search, listing, or install downloads the Hackage package index (about 140 MB, 1.2 GB on disk) into mise's cache directory, which takes about a minute. Later runs only fetch new uploads. `mise cache clear` deletes it.
 - **Executables only.** Library-only Hackage packages (no executable component) are not supported.
 
 ## Development

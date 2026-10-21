@@ -40,16 +40,22 @@ experimental = true # Needed for using backend plugins like mise-ghcup and mise-
 
 ## Usage
 
-Add the plugin to your `mise.toml`, pinned to a [release tag](https://github.com/wasp-lang/mise-cabal/releases):
+Add the plugin to your `mise.toml`, pinned to a [release](https://github.com/wasp-lang/mise-cabal/releases). Releases are signed [packslip](https://mise.jdx.dev/plugin-publishing.html#packslip) archives, so mise verifies the plugin before installing it:
 
 <!-- x-release-please-start-version -->
 
 ```toml
 [plugins]
-"vfox-backend:mise-cabal" = "https://github.com/wasp-lang/mise-cabal.git#v2.0.0"
+"vfox-backend:mise-cabal" = "packslip:wasp-lang/mise-cabal#2.0.0"
 
 [settings]
 experimental = true # Needed for using backend plugins like mise-cabal
+```
+
+Or install it from the command line:
+
+```bash
+mise plugins install vfox-backend:mise-cabal 'packslip:wasp-lang/mise-cabal#2.0.0'
 ```
 
 <!-- x-release-please-end -->

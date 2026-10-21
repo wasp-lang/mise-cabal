@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.0.0](https://github.com/wasp-lang/mise-cabal/compare/v1.1.0...v2.0.0) (2026-10-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* requires mise 2026.10.17 or newer.
+
+### Features
+
+* report version release dates from a shared Hackage index ([#21](https://github.com/wasp-lang/mise-cabal/issues/21)) ([53c30d2](https://github.com/wasp-lang/mise-cabal/commit/53c30d2f2dd9f8452cbfb20fabed3546f1136a9b)), closes [#20](https://github.com/wasp-lang/mise-cabal/issues/20)
+* reuse the shared Hackage index when installing ([#22](https://github.com/wasp-lang/mise-cabal/issues/22)) ([1422b22](https://github.com/wasp-lang/mise-cabal/commit/1422b22a9087696afa4a802266ced3b907aedb5d))
+
 ## [1.1.0](https://github.com/wasp-lang/mise-cabal/compare/v1.0.0...v1.1.0) (2026-10-19)
 
 
